@@ -1,11 +1,41 @@
 #! /usr/bin/env node
 
+let t0, t1;
+
+t0 = Date.now();
 const path = require('path');
+t1 = Date.now();
+console.log('path ' + (t1 - t0) + ' ms');
+
+t0 = Date.now();
 const minimist = require('minimist');
+t1 = Date.now();
+console.log('minimist ' + (t1 - t0) + ' ms');
+
+t0 = Date.now();
 const shell = require('shelljs');
+t1 = Date.now();
+console.log('shelljs ' + (t1 - t0) + ' ms');
+
+t0 = Date.now();
+const child = require('child_process');
+t1 = Date.now();
+console.log('childprocess ' + (t1 - t0) + ' ms');
+
+t0 = Date.now();
 const { stripIndent, oneLine } = require('common-tags');
+t1 = Date.now();
+console.log('common-tags ' + (t1 - t0) + ' ms');
+
+t0 = Date.now();
 const { gitAuthors } = require('../git-authors');
+t1 = Date.now();
+console.log('git-authors ' + (t1 - t0) + ' ms');
+
+t0 = Date.now();
 const { gitMessage } = require('../git-message');
+t1 = Date.now();
+console.log('git-message ' + (t1 - t0) + ' ms');
 
 const gitMessagePath =
   process.env.GITMOB_MESSAGE_PATH ||
