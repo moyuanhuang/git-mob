@@ -12,13 +12,13 @@ const minimist = require('minimist');
 t1 = Date.now();
 console.log('minimist ' + (t1 - t0) + ' ms');
 
-t0 = Date.now();
-const shell = require('shelljs');
-t1 = Date.now();
-console.log('shelljs ' + (t1 - t0) + ' ms');
+// t0 = Date.now();
+// const shell = require('shelljs');
+// t1 = Date.now();
+// console.log('shelljs ' + (t1 - t0) + ' ms');
 
 t0 = Date.now();
-const child = require('child_process');
+const { execSync } = require('child_process');
 t1 = Date.now();
 console.log('childprocess ' + (t1 - t0) + ' ms');
 
@@ -51,11 +51,11 @@ const argv = minimist(process.argv.slice(2), {
 
 if (argv.help) {
   runHelp();
-  shell.exit(0);
+  process.exit(0);
 }
 if (argv.version) {
   runVersion();
-  shell.exit(0);
+  process.exit(0);
 }
 
 runMob(argv._);
@@ -115,18 +115,18 @@ function setMob(initials) {
     })
     .catch(err => {
       console.error(`Error: ${err.message}`);
-      shell.exit(1);
+      process.exit(1);
     });
 }
 
 function author() {
-  const name = silentRun('git config user.name').stdout.trim();
-  const email = silentRun('git config user.email').stdout.trim();
+  const name = silentRun('git config user.name').trim();
+  const email = silentRun('git config user.email').trim();
   return oneLine`${name} <${email}>`;
 }
 
 function coauthors() {
-  return silentRun('git config --get-all git-mob.co-author').stdout.trim();
+  return silentRun('git config --get-all git-mob.co-author').trim();
 }
 
 function isCoAuthorSet() {
@@ -143,7 +143,8 @@ function resetMob() {
 }
 
 function silentRun(command) {
-  return shell.exec(command, { silent: true });
+  return execSync('ls -la', { encoding: 'utf8' });
+  // return shell.exec(command, { silent: true });
 }
 
 function setCommitTemplate() {
@@ -152,5 +153,5 @@ function setCommitTemplate() {
 }
 
 function commitTemplatePath() {
-  return silentRun('git config commit.template').stdout.trim();
+  return silentRun('git config commit.template').trim();
 }
