@@ -15,6 +15,17 @@ function write(data, cb) {
 write('coming soon', function() {});
 
 const { execSync } = require('child_process');
-const child = execSync('ls -la', { encoding: 'utf8' });
 
-write(child, function() {});
+try {
+  const child = execSync('git config commit.template', { encoding: 'utf8' });
+  write(child, function() {});
+} catch (e) {
+  const errObj = {
+    code: e.status,
+    pid: e.pid,
+    stderr: e.stderr,
+    stdout: e.stdout,
+    cmd: e.cmd,
+  };
+  console.log(errObj);
+}
