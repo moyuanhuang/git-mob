@@ -16,7 +16,11 @@ if(/COMMIT_EDITMSG/g.test(commitMessage)){
         contents = fs.readFileSync(commitMessage);
 
         const commentPos = contents.indexOf('# ');
-        const gitMessage = contents.slice(0, commentPos);
+        let startOfCoAuthor = contents.toString().search(new RegExp("^Co-authored-by:.*$", "gm"));
+        if (startOfCoAuthor == -1) {
+            startOfCoAuthor = commentPos;
+        }
+        const gitMessage = contents.slice(0, startOfCoAuthor);
         const gitComments = contents.slice(commentPos)
 
         fs.writeFileSync(commitMessage, gitMessage + stdout + gitComments);
